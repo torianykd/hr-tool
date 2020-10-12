@@ -4,11 +4,13 @@ import io.swagger.v3.oas.annotations.Parameter;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import ua.com.alevel.nix.hrtool.model.position.request.SavePositionRequest;
 import ua.com.alevel.nix.hrtool.model.position.response.PositionResponse;
 import ua.com.alevel.nix.hrtool.service.position.PositionService;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("positions")
@@ -25,4 +27,23 @@ public class PositionController {
     public Page<PositionResponse> listPositions(@Parameter(hidden = true) Pageable pageable) {
         return positionService.findAll(pageable).map(PositionResponse::fromPosition);
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public PositionResponse create(@Valid @RequestBody SavePositionRequest request) {
+        return positionService.create(request);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@PathVariable long id, @Valid @RequestBody SavePositionRequest request) {
+        positionService.update(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable long id) {
+        positionService.delete(id);
+    }
+
 }
