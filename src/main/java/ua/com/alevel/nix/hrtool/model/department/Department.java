@@ -10,16 +10,20 @@ import java.util.Set;
 public class Department {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(unique = true, nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "department")
     private Set<Position> positions;
 
     public Department() {
+    }
+
+    public Department(String name) {
+        this.name = name;
     }
 
     public Long getId() {

@@ -1,6 +1,5 @@
 package ua.com.alevel.nix.hrtool.model.position;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import ua.com.alevel.nix.hrtool.model.department.Department;
 import ua.com.alevel.nix.hrtool.model.employee.Employee;
 
@@ -12,7 +11,7 @@ import java.util.Set;
 public class Position {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
