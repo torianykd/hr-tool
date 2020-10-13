@@ -26,8 +26,8 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
-    public Page<Position> findAll(Pageable pageable) {
-        return positionRepository.findAll(pageable);
+    public Page<PositionResponse> findAll(Pageable pageable) {
+        return positionRepository.findAll(pageable).map(PositionResponse::fromPosition);
     }
 
     @Override

@@ -25,7 +25,7 @@ public class PositionController {
     @GetMapping
     @PageableAsQueryParam
     public Page<PositionResponse> listPositions(@Parameter(hidden = true) Pageable pageable) {
-        return positionService.findAll(pageable).map(PositionResponse::fromPosition);
+        return positionService.findAll(pageable);
     }
 
     @GetMapping("/{id}")

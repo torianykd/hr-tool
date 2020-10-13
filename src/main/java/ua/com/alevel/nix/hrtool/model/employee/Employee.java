@@ -1,9 +1,11 @@
 package ua.com.alevel.nix.hrtool.model.employee;
 
+import ua.com.alevel.nix.hrtool.model.employee.request.SaveEmployeeRequest;
 import ua.com.alevel.nix.hrtool.model.position.Position;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -40,12 +42,20 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(Long id, String email, EmployeeName employeeName, Instant birthDate, Instant hiringDate) {
-        this.id = id;
+    public Employee(String email, EmployeeName employeeName, Instant birthDate, Instant hiringDate) {
         this.email = email;
         this.employeeName = employeeName;
         this.birthDate = birthDate;
         this.hiringDate = hiringDate;
+    }
+
+    public Employee(SaveEmployeeRequest request) {
+        this(
+                request.getEmail(),
+                new EmployeeName(request.getFirstName(), request.getLastName()),
+                Instant.ofEpochSecond(request.getBirthDate()),
+                Instant.ofEpochSecond(request.getHiringDate())
+        );
     }
 
     public Long getId() {
@@ -102,5 +112,22 @@ public class Employee {
 
     public void setContacts(Set<Contact> contacts) {
         this.contacts = contacts;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Employee)) return false;
+        Employee employee = (Employee) o;
+        return id.equals(employee.id) &&
+                email.equals(employee.email) &&
+                employeeName.equals(employee.employeeName) &&
+                birthDate.equals(employee.birthDate) &&
+                hiringDate.equals(employee.hiringDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, employeeName, birthDate, hiringDate);
     }
 }

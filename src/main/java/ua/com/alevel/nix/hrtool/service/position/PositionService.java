@@ -8,7 +8,7 @@ import ua.com.alevel.nix.hrtool.model.position.response.PositionResponse;
 
 public interface PositionService {
 
-    Page<Position> findAll(Pageable pageable);
+    Page<PositionResponse> findAll(Pageable pageable);
 
     PositionResponse create(SavePositionRequest request);
 

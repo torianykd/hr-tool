@@ -1,6 +1,9 @@
 package ua.com.alevel.nix.hrtool.model.employee;
 
+import ua.com.alevel.nix.hrtool.model.employee.request.SaveContactRequest;
+
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "contacts")
@@ -28,6 +31,11 @@ public class Contact {
         this.value = value;
     }
 
+    public Contact(SaveContactRequest request) {
+        type = request.getType();
+        value = request.getValue();
+    }
+
     public Long getId() {
         return id;
     }
@@ -50,5 +58,28 @@ public class Contact {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Contact)) return false;
+        Contact contact = (Contact) o;
+        return type == contact.type &&
+                value.equals(contact.value) &&
+                employee.equals(contact.employee);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, value, employee);
     }
 }

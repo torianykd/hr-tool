@@ -4,7 +4,9 @@ import ua.com.alevel.nix.hrtool.model.employee.Employee;
 import ua.com.alevel.nix.hrtool.model.position.Position;
 import ua.com.alevel.nix.hrtool.model.position.response.PositionResponse;
 
+import javax.swing.text.html.Option;
 import java.time.Instant;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,12 +30,16 @@ public class EmployeeResponse {
 
     public static EmployeeResponse fromEmployee(Employee employee) {
         EmployeeResponse employeeResponse = fromEmployeeWithBasicAttributes(employee);
-        employeeResponse.positions = employee.getPositions().stream()
-                .map(PositionResponse::fromPositionWithBasicAttributes)
-                .collect(Collectors.toSet());
-        employeeResponse.contacts = employee.getContacts().stream()
-                .map(ContactResponse::fromContactWithBasicAttributes)
-                .collect(Collectors.toSet());
+        if (Optional.ofNullable(employee.getPositions()).isPresent() && !employee.getPositions().isEmpty()) {
+            employeeResponse.positions = employee.getPositions().stream()
+                    .map(PositionResponse::fromPositionWithBasicAttributes)
+                    .collect(Collectors.toSet());
+        }
+        if (Optional.ofNullable(employee.getContacts()).isPresent() && !employee.getContacts().isEmpty()) {
+            employeeResponse.contacts = employee.getContacts().stream()
+                    .map(ContactResponse::fromContactWithBasicAttributes)
+                    .collect(Collectors.toSet());
+        }
         return employeeResponse;
     }
 

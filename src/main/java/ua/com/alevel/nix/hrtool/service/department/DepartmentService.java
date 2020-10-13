@@ -8,7 +8,7 @@ import ua.com.alevel.nix.hrtool.model.department.response.DepartmentResponse;
 
 public interface DepartmentService {
 
-    Page<Department> findAll(Pageable pageable);
+    Page<DepartmentResponse> findAll(Pageable pageable);
 
     DepartmentResponse create(SaveDepartmentRequest request);
 

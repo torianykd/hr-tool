@@ -19,8 +19,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Page<Department> findAll(Pageable pageable) {
-        return departmentRepository.findAll(pageable);
+    public Page<DepartmentResponse> findAll(Pageable pageable) {
+        return departmentRepository.findAll(pageable).map(DepartmentResponse::fromDepartment);
     }
 
     @Override

@@ -53,9 +53,9 @@ create table employee_position
 create table contacts
 (
     id          int unsigned auto_increment,
-    employee_id int unsigned not null,
-    type        enum ('PHONE', 'SLYPE'),
-    value       varchar(255),
+    employee_id int unsigned            not null,
+    type        enum ('PHONE', 'SKYPE') not null,
+    value       varchar(255)            not null,
     constraint contacts_pk
         primary key (id),
     constraint contacts_employee_id_fk foreign key (employee_id)

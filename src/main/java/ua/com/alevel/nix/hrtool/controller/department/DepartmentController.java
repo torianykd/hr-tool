@@ -25,7 +25,7 @@ public class DepartmentController {
     @GetMapping
     @PageableAsQueryParam
     public Page<DepartmentResponse> listDepartments(@Parameter(hidden = true) Pageable pageable) {
-        return departmentService.findAll(pageable).map(DepartmentResponse::fromDepartment);
+        return departmentService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
