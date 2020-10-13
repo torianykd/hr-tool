@@ -16,7 +16,7 @@ import javax.validation.Valid;
 @RequestMapping("positions")
 public class PositionController {
 
-    PositionService positionService;
+    private final PositionService positionService;
 
     public PositionController(PositionService positionService) {
         this.positionService = positionService;

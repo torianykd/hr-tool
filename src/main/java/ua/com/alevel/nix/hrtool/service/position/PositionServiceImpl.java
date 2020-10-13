@@ -17,8 +17,8 @@ import java.util.Optional;
 @Service
 public class PositionServiceImpl implements PositionService {
 
-    PositionRepository positionRepository;
-    DepartmentRepository departmentRepository;
+    private final PositionRepository positionRepository;
+    private final DepartmentRepository departmentRepository;
 
     public PositionServiceImpl(PositionRepository positionRepository, DepartmentRepository departmentRepository) {
         this.positionRepository = positionRepository;

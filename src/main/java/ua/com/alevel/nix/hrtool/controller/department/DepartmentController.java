@@ -16,7 +16,7 @@ import javax.validation.Valid;
 @RequestMapping("departments")
 public class DepartmentController {
 
-    DepartmentService departmentService;
+    private final DepartmentService departmentService;
 
     public DepartmentController(DepartmentService departmentService) {
         this.departmentService = departmentService;
