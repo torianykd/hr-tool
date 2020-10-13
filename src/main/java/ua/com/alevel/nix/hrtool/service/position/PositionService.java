@@ -16,4 +16,6 @@ public interface PositionService {
 
     void delete(long id);
 
+    PositionResponse getById(Long id);
+
 }

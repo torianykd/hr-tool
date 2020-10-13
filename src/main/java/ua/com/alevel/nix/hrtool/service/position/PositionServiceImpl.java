@@ -61,6 +61,11 @@ public class PositionServiceImpl implements PositionService {
         positionRepository.deleteById(id);
     }
 
+    @Override
+    public PositionResponse getById(Long id) {
+        return PositionResponse.fromPosition(getPosition(id));
+    }
+
     private Position getPosition(long id) {
         return positionRepository.findById(id)
                 .orElseThrow(() -> PositionException.positionNotFound(id));

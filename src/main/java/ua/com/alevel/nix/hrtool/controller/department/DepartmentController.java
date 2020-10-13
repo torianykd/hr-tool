@@ -28,6 +28,11 @@ public class DepartmentController {
         return departmentService.findAll(pageable).map(DepartmentResponse::fromDepartment);
     }
 
+    @GetMapping("/{id}")
+    public DepartmentResponse get(@PathVariable long id) {
+        return departmentService.getById(id);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public DepartmentResponse create(@RequestBody @Valid SaveDepartmentRequest request) {

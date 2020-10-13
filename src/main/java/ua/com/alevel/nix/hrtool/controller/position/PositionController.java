@@ -28,6 +28,11 @@ public class PositionController {
         return positionService.findAll(pageable).map(PositionResponse::fromPosition);
     }
 
+    @GetMapping("/{id}")
+    public PositionResponse get(@PathVariable long id) {
+        return positionService.getById(id);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PositionResponse create(@Valid @RequestBody SavePositionRequest request) {

@@ -44,6 +44,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         departmentRepository.deleteById(id);
     }
 
+    @Override
+    public DepartmentResponse getById(long id) {
+        return DepartmentResponse.fromDepartment(getDepartment(id));
+    }
+
     private Department getDepartment(long id) {
         return departmentRepository.findById(id)
                 .orElseThrow(() -> DepartmentException.departmentNotFound(id));
