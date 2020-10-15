@@ -1,6 +1,7 @@
 package ua.com.alevel.nix.hrtool.controller.department;
 
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("departments")
+@Tag(name = "Departments Resource")
 public class DepartmentController {
 
     DepartmentService departmentService;
