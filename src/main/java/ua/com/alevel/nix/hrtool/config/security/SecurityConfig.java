@@ -9,12 +9,22 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    final CustomJwtAuthenticationConverter customJwtAuthenticationConverter;
+
+    public SecurityConfig(CustomJwtAuthenticationConverter customJwtAuthenticationConverter) {
+        this.customJwtAuthenticationConverter = customJwtAuthenticationConverter;
+    }
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                .anyRequest().authenticated()
-                .and().cors()
-                .and().oauth2ResourceServer().jwt();
+                    .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                    .anyRequest().authenticated()
+                .and()
+                    .cors()
+                .and()
+                    .oauth2ResourceServer()
+                    .jwt()
+                    .jwtAuthenticationConverter(customJwtAuthenticationConverter);
     }
 }

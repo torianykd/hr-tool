@@ -26,3 +26,4 @@ springdoc:
 
 auth0:
   audience: ${AUTH0_AUDIENCE}
+  emailClaim: ${AUTH0_EMAIL_CLAIM}
