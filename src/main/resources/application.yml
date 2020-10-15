@@ -9,3 +9,20 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${MYSQL_USER}
     password: ${MYSQL_ROOT_PASSWORD}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${AUTH0_ISSUER_URI}
+
+springdoc:
+  swagger-ui:
+    oauth:
+      clientId: ${AUTH0_CLIENT_ID}
+      clientSecret: ${AUTH0_CLIENT_SECRET}
+  oAuthFlow:
+    authorizationUrl: ${AUTH0_AUTH_URL}
+    tokenUrl: ${AUTH0_TOKEN_URL}
+
+auth0:
+  audience: ${AUTH0_AUDIENCE}
