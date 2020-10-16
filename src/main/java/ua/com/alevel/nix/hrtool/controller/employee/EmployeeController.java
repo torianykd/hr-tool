@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ua.com.alevel.nix.hrtool.Routes;
 import ua.com.alevel.nix.hrtool.model.employee.request.SaveEmployeeRequest;
 import ua.com.alevel.nix.hrtool.model.employee.response.EmployeeResponse;
 import ua.com.alevel.nix.hrtool.service.employee.EmployeeService;
@@ -14,7 +15,7 @@ import ua.com.alevel.nix.hrtool.service.employee.EmployeeService;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("employees")
+@RequestMapping(Routes.EMPLOYEES)
 @Tag(name = "Employees Resource")
 public class EmployeeController {
 

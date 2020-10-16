@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ua.com.alevel.nix.hrtool.Routes;
 import ua.com.alevel.nix.hrtool.model.position.request.SavePositionRequest;
 import ua.com.alevel.nix.hrtool.model.position.response.PositionResponse;
 import ua.com.alevel.nix.hrtool.service.position.PositionService;
@@ -14,7 +15,7 @@ import ua.com.alevel.nix.hrtool.service.position.PositionService;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("positions")
+@RequestMapping(Routes.POSITIONS)
 @Tag(name = "Positions Resource")
 public class PositionController {
 
