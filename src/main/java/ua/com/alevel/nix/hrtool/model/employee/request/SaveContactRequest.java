@@ -1,25 +1,26 @@
 package ua.com.alevel.nix.hrtool.model.employee.request;
 
-import ua.com.alevel.nix.hrtool.model.employee.ContactType;
+import org.hibernate.validator.constraints.Length;
+import ua.com.alevel.nix.hrtool.model.employee.constraint.ContactTypeConstraint;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 public class SaveContactRequest {
 
     @NotNull(message = "Type must not be null")
-    private ContactType type;
+    @ContactTypeConstraint
+    private String type;
 
     @NotNull(message = "Value must not be null")
-    @Min(value = 2, message = "Value must be 2 characters at least")
+    @Length(min = 2, message = "Value must be 2 characters at least")
     private String value;
 
-    public ContactType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(ContactType type) {
-        this.type = type;
+    public void setType(String type) {
+        this.type = type.toUpperCase();
     }
 
     public String getValue() {

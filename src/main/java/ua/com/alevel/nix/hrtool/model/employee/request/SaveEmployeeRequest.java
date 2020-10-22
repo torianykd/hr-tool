@@ -2,6 +2,7 @@ package ua.com.alevel.nix.hrtool.model.employee.request;
 
 import org.hibernate.validator.constraints.Range;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -28,6 +29,7 @@ public class SaveEmployeeRequest {
 
     private List<Long> positionIds;
 
+    @Valid
     private List<SaveContactRequest> contacts;
 
     public String getEmail() {

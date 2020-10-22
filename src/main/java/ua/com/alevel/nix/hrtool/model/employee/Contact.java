@@ -32,7 +32,7 @@ public class Contact {
     }
 
     public Contact(SaveContactRequest request) {
-        type = request.getType();
+        type = ContactType.valueOf(request.getType());
         value = request.getValue();
     }
 
