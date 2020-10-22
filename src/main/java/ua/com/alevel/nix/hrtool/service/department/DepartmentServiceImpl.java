@@ -25,7 +25,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public DepartmentResponse create(SaveDepartmentRequest request) {
-        validateUnique(request);
         return DepartmentResponse.fromDepartmentWithBasicAttributes(
                 departmentRepository.save(new Department(request.getName()))
         );
@@ -34,7 +33,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public void update(long id, SaveDepartmentRequest request) {
         Department department = getDepartment(id);
-        validateUnique(request);
         department.setName(request.getName());
         departmentRepository.save(department);
     }
