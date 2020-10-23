@@ -27,7 +27,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .mvcMatchers(
                             Routes.DEPARTMENTS + "/**",
                             Routes.POSITIONS + "/**",
-                            Routes.EMPLOYEES + "/**"
+                            Routes.EMPLOYEES + "/**",
+                            Routes.LEAVE_REQUESTS + "/{id:\\d+}/**"
                     ).hasAuthority("SCOPE_manage:resources")
                 .anyRequest().authenticated()
                 .and()

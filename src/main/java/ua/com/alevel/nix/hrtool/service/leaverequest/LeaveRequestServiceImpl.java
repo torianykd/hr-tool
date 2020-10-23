@@ -39,6 +39,21 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
         );
     }
 
+    @Override
+    public void approve(long id) {
+        updateStatus(getLeaveRequest(id), LeaveRequestStatus.APPROVED);
+    }
+
+    @Override
+    public void decline(long id) {
+        updateStatus(getLeaveRequest(id), LeaveRequestStatus.DECLINED);
+    }
+
+    private LeaveRequest getLeaveRequest(long id) {
+        return leaveRequestRepository.findById(id)
+                .orElseThrow(() -> LeaveRequestException.requestNotFound(id));
+    }
+
     private Employee getEmployee(String email) {
         return employeeRepository.findByEmail(email)
                 .orElseThrow(() -> EmployeeException.employeeNotFound(email));
@@ -52,6 +67,13 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
 
         if (!existingRequests.isEmpty()) {
             throw LeaveRequestException.requestAlreadyExists();
+        }
+    }
+
+    private void updateStatus(LeaveRequest request, LeaveRequestStatus status) {
+        if (request.getStatus().equals(LeaveRequestStatus.PENDING)) {
+            request.setStatus(status);
+            leaveRequestRepository.save(request);
         }
     }
 }

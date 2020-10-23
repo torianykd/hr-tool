@@ -9,4 +9,8 @@ public final class LeaveRequestException {
         return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request for selected period already exists.");
     }
 
+    public static ResponseStatusException requestNotFound(long id) {
+        return new ResponseStatusException(HttpStatus.NOT_FOUND, "Request with id " + id + " not found");
+    }
+
 }

@@ -7,4 +7,8 @@ public interface LeaveRequestService {
 
     LeaveRequestResponse create(SaveLeaveRequest request, String employeeEmail);
 
+    void approve(long id);
+
+    void decline(long id);
+
 }

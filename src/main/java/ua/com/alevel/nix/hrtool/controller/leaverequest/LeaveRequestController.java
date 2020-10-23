@@ -30,4 +30,16 @@ public class LeaveRequestController {
         return leaveRequestService.create(request, principal.getName());
     }
 
+    @PostMapping("/{id}/approve")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void approve(@PathVariable long id) {
+        leaveRequestService.approve(id);
+    }
+
+    @PostMapping("/{id}/decline")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void decline(@PathVariable long id) {
+        leaveRequestService.decline(id);
+    }
+
 }
