@@ -61,3 +61,18 @@ create table contacts
     constraint contacts_employee_id_fk foreign key (employee_id)
         references employees (id) on delete cascade
 );
+
+create table leave_requests
+(
+    id          int unsigned auto_increment,
+    employee_id int unsigned                                                            not null,
+    type        enum ('PAYABLE', 'NON_PAYABLE', 'SICK_LEAVE', 'REMOTE_WORK', 'SHIFTED') not null,
+    status      enum ('PENDING', 'APPROVED', 'DECLINED')                                not null default 'PENDING',
+    start       timestamp                                                               not null,
+    end         timestamp                                                               not null,
+    comment     varchar(255),
+    constraint leave_requests_pk
+        primary key (id),
+    constraint leave_requests_employee_id_fk foreign key (employee_id)
+        references employees (id) on delete cascade
+);

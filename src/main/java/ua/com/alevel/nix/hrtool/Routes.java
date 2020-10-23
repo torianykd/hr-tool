@@ -13,4 +13,6 @@ public final class Routes {
 
     public static final String POSITIONS = API_ROOT + "/positions";
 
+    public static final String LEAVE_REQUESTS = API_ROOT + "/leave-requests";
+
 }

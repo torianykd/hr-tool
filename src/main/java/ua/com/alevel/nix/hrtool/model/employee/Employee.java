@@ -1,6 +1,7 @@
 package ua.com.alevel.nix.hrtool.model.employee;
 
 import ua.com.alevel.nix.hrtool.model.employee.request.SaveEmployeeRequest;
+import ua.com.alevel.nix.hrtool.model.leaverequest.LeaveRequest;
 import ua.com.alevel.nix.hrtool.model.position.Position;
 
 import javax.persistence.*;
@@ -38,6 +39,9 @@ public class Employee {
 
     @OneToMany(mappedBy = "employee")
     private Set<Contact> contacts;
+
+    @OneToMany(mappedBy = "employee")
+    private Set<LeaveRequest> leaveRequests;
 
     public Employee() {
     }
@@ -112,6 +116,14 @@ public class Employee {
 
     public void setContacts(Set<Contact> contacts) {
         this.contacts = contacts;
+    }
+
+    public Set<LeaveRequest> getLeaveRequests() {
+        return leaveRequests;
+    }
+
+    public void setLeaveRequests(Set<LeaveRequest> leaveRequests) {
+        this.leaveRequests = leaveRequests;
     }
 
     @Override

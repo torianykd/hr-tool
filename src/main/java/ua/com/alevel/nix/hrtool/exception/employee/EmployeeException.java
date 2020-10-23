@@ -17,4 +17,8 @@ public class EmployeeException {
         return new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee with id " + id + " not found");
     }
 
+    public static ResponseStatusException employeeNotFound(String email) {
+        return new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee with email " + email + " not found");
+    }
+
 }
