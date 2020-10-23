@@ -19,5 +19,11 @@ public interface LeaveRequestRepository extends JpaRepository<LeaveRequest, Long
     List<LeaveRequest> requestsForPeriod(
             Employee employee, LocalDate start, LocalDate end, Collection<LeaveRequestStatus> status);
 
+    @Query("select lr from LeaveRequest lr " +
+            "where lr.employee = :employee and lr.status in :status " +
+            "and lr.start <= :end and lr.end >= :start and lr.id <> :id")
+    List<LeaveRequest> requestsForPeriod(
+            Employee employee, LocalDate start, LocalDate end, Collection<LeaveRequestStatus> status, long id);
+
     Page<LeaveRequest> findAllByEmployeeOrderByIdDesc(Pageable pageable, Employee employee);
 }

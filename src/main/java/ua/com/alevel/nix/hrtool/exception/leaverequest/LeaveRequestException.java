@@ -13,4 +13,8 @@ public final class LeaveRequestException {
         return new ResponseStatusException(HttpStatus.NOT_FOUND, "Request with id " + id + " not found");
     }
 
+    public static ResponseStatusException actionForbidden() {
+        return new ResponseStatusException(HttpStatus.FORBIDDEN, "Action on this resource is forbidden.");
+    }
+
 }

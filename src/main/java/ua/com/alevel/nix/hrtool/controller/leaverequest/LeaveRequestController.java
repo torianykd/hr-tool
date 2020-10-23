@@ -41,6 +41,19 @@ public class LeaveRequestController {
         return leaveRequestService.create(request, principal.getName());
     }
 
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@PathVariable long id,@Valid @RequestBody SaveLeaveRequest request,
+                       @AuthenticationPrincipal Principal principal) {
+        leaveRequestService.update(id, request, principal.getName());
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable long id, @AuthenticationPrincipal Principal principal) {
+        leaveRequestService.deleteById(id, principal.getName());
+    }
+
     @PostMapping("/{id}/approve")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void approve(@PathVariable long id) {

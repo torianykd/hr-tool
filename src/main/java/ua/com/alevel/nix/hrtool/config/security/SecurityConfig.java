@@ -23,6 +23,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                     // Employee
                     .mvcMatchers(HttpMethod.GET, Routes.EMPLOYEES).hasAuthority("SCOPE_read:resources")
+                    .mvcMatchers(HttpMethod.PUT, Routes.LEAVE_REQUESTS + "/{id:\\d+}").hasAuthority("SCOPE_create:requests")
+                    .mvcMatchers(HttpMethod.DELETE, Routes.LEAVE_REQUESTS + "/{id:\\d+}").hasAuthority("SCOPE_create:requests")
                     // Admin
                     .mvcMatchers(
                             Routes.DEPARTMENTS + "/**",

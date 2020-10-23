@@ -8,6 +8,7 @@ import ua.com.alevel.nix.hrtool.exception.leaverequest.LeaveRequestException;
 import ua.com.alevel.nix.hrtool.model.employee.Employee;
 import ua.com.alevel.nix.hrtool.model.leaverequest.LeaveRequest;
 import ua.com.alevel.nix.hrtool.model.leaverequest.LeaveRequestStatus;
+import ua.com.alevel.nix.hrtool.model.leaverequest.LeaveRequestType;
 import ua.com.alevel.nix.hrtool.model.leaverequest.request.SaveLeaveRequest;
 import ua.com.alevel.nix.hrtool.model.leaverequest.response.LeaveRequestResponse;
 import ua.com.alevel.nix.hrtool.repository.EmployeeRepository;
@@ -27,7 +28,6 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
         this.leaveRequestRepository = leaveRequestRepository;
     }
 
-
     @Override
     public Page<LeaveRequestResponse> findAll(Pageable pageable, String employeeEmail) {
         Employee employee = getEmployee(employeeEmail);
@@ -46,6 +46,28 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
         return LeaveRequestResponse.fromLeaveRequestWithBasicAttributes(
                 leaveRequestRepository.save(leaveRequest)
         );
+    }
+
+    @Override
+    public void update(long id, SaveLeaveRequest request, String employeeEmail) {
+        Employee employee = getEmployee(employeeEmail);
+        LeaveRequest leaveRequest = getLeaveRequest(id);
+        validateActionForEmployee(employee, leaveRequest);
+        validateRequestAvailability(request, employee, leaveRequest.getId());
+
+        leaveRequest.setType(LeaveRequestType.valueOf(request.getType()));
+        leaveRequest.setStart(request.getStart());
+        leaveRequest.setEnd(request.getEnd());
+        leaveRequest.setComment(request.getComment());
+        leaveRequestRepository.save(leaveRequest);
+    }
+
+    @Override
+    public void deleteById(long id, String employeeEmail) {
+        Employee employee = getEmployee(employeeEmail);
+        LeaveRequest leaveRequest = getLeaveRequest(id);
+        validateActionForEmployee(employee, leaveRequest);
+        leaveRequestRepository.deleteById(id);
     }
 
     @Override
@@ -76,6 +98,24 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
 
         if (!existingRequests.isEmpty()) {
             throw LeaveRequestException.requestAlreadyExists();
+        }
+    }
+
+    private void validateRequestAvailability(SaveLeaveRequest request, Employee employee, long id) {
+        List<LeaveRequestStatus> statusList = List.of(LeaveRequestStatus.PENDING, LeaveRequestStatus.APPROVED);
+        List<LeaveRequest> existingRequests = leaveRequestRepository.requestsForPeriod(
+                employee, request.getStart(), request.getEnd(), statusList, id
+        );
+
+        if (!existingRequests.isEmpty()) {
+            throw LeaveRequestException.requestAlreadyExists();
+        }
+    }
+
+    private void validateActionForEmployee(Employee employee, LeaveRequest leaveRequest) {
+        if (!leaveRequest.getEmployee().equals(employee) ||
+                !leaveRequest.getStatus().equals(LeaveRequestStatus.PENDING)) {
+            throw LeaveRequestException.actionForbidden();
         }
     }
 

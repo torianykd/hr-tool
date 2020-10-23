@@ -11,6 +11,10 @@ public interface LeaveRequestService {
 
     LeaveRequestResponse create(SaveLeaveRequest request, String employeeEmail);
 
+    void update(long id, SaveLeaveRequest request, String employeeEmail);
+
+    void deleteById(long id, String employeeEmail);
+
     void approve(long id);
 
     void decline(long id);
