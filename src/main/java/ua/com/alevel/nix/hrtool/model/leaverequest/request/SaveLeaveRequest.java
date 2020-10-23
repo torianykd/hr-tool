@@ -1,12 +1,12 @@
 package ua.com.alevel.nix.hrtool.model.leaverequest.request;
 
-import org.hibernate.validator.constraints.Range;
-import ua.com.alevel.nix.hrtool.model.leaverequest.LeaveRequestType;
+import org.springframework.format.annotation.DateTimeFormat;
 import ua.com.alevel.nix.hrtool.model.leaverequest.constraint.EndValueConstraint;
 import ua.com.alevel.nix.hrtool.model.leaverequest.constraint.LeaveRequestTypeConstraint;
 import ua.com.alevel.nix.hrtool.model.leaverequest.constraint.StartValueConstraint;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @EndValueConstraint
 public class SaveLeaveRequest {
@@ -16,13 +16,13 @@ public class SaveLeaveRequest {
     private String type;
 
     @NotNull(message = "Start must not be null")
-    @Range(min = 1, max = 9999999999L, message = "Birth date must be a valid timestamp")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @StartValueConstraint
-    private long start;
+    private LocalDate start;
 
     @NotNull(message = "Start must not be null")
-    @Range(min = 1, max = 9999999999L, message = "Birth date must be a valid timestamp")
-    private long end;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate end;
 
     private String comment;
 
@@ -34,19 +34,19 @@ public class SaveLeaveRequest {
         this.type = type.toUpperCase();
     }
 
-    public long getStart() {
+    public LocalDate getStart() {
         return start;
     }
 
-    public void setStart(long start) {
+    public void setStart(LocalDate start) {
         this.start = start;
     }
 
-    public long getEnd() {
+    public LocalDate getEnd() {
         return end;
     }
 
-    public void setEnd(long end) {
+    public void setEnd(LocalDate end) {
         this.end = end;
     }
 

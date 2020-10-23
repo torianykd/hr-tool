@@ -8,6 +8,6 @@ import javax.validation.ConstraintValidatorContext;
 public class EndValueValidator implements ConstraintValidator<EndValueConstraint, SaveLeaveRequest> {
     @Override
     public boolean isValid(SaveLeaveRequest request, ConstraintValidatorContext context) {
-        return request.getEnd() >= request.getStart();
+        return request.getEnd().compareTo(request.getStart()) >= 0;
     }
 }

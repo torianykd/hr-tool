@@ -5,12 +5,9 @@ import javax.validation.ConstraintValidatorContext;
 import java.time.*;
 
 
-public class StartValueValidator implements ConstraintValidator<StartValueConstraint, Long> {
+public class StartValueValidator implements ConstraintValidator<StartValueConstraint, LocalDate> {
     @Override
-    public boolean isValid(Long start, ConstraintValidatorContext context) {
-        long today = LocalDate.now().atStartOfDay().toEpochSecond(
-                OffsetDateTime.now().getOffset()
-        );
-        return start >= today;
+    public boolean isValid(LocalDate start, ConstraintValidatorContext context) {
+        return start.compareTo(LocalDate.now()) >= 0;
     }
 }

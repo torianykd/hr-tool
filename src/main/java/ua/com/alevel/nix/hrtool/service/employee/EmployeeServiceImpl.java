@@ -77,8 +77,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         employee.setEmail(request.getEmail());
         employee.setEmployeeName(new EmployeeName(request.getFirstName(), request.getLastName()));
-        employee.setBirthDate(Instant.ofEpochSecond(request.getBirthDate()));
-        employee.setHiringDate(Instant.ofEpochSecond(request.getHiringDate()));
+        employee.setBirthDate(request.getBirthDate());
+        employee.setHiringDate(request.getHiringDate());
         employee.setPositions(new HashSet<>(positions));
         updateContacts(employee, request.getContacts());
         employeeRepository.save(employee);

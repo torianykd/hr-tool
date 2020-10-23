@@ -4,7 +4,7 @@ import ua.com.alevel.nix.hrtool.model.employee.Employee;
 import ua.com.alevel.nix.hrtool.model.leaverequest.request.SaveLeaveRequest;
 
 import javax.persistence.*;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -24,10 +24,10 @@ public class LeaveRequest {
     private LeaveRequestStatus status;
 
     @Column(nullable = false)
-    private Instant start;
+    private LocalDate start;
 
     @Column(nullable = false)
-    private Instant end;
+    private LocalDate end;
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
@@ -43,13 +43,13 @@ public class LeaveRequest {
         this(
                 LeaveRequestType.valueOf(request.getType()),
                 LeaveRequestStatus.PENDING,
-                Instant.ofEpochSecond(request.getStart()),
-                Instant.ofEpochSecond(request.getEnd()),
+                request.getStart(),
+                request.getEnd(),
                 request.getComment()
         );
     }
 
-    public LeaveRequest(LeaveRequestType type, LeaveRequestStatus status, Instant start, Instant end, String comment) {
+    public LeaveRequest(LeaveRequestType type, LeaveRequestStatus status, LocalDate start, LocalDate end, String comment) {
         this.type = type;
         this.status = status;
         this.start = start;
@@ -81,19 +81,19 @@ public class LeaveRequest {
         this.status = status;
     }
 
-    public Instant getStart() {
+    public LocalDate getStart() {
         return start;
     }
 
-    public void setStart(Instant start) {
+    public void setStart(LocalDate start) {
         this.start = start;
     }
 
-    public Instant getEnd() {
+    public LocalDate getEnd() {
         return end;
     }
 
-    public void setEnd(Instant end) {
+    public void setEnd(LocalDate end) {
         this.end = end;
     }
 

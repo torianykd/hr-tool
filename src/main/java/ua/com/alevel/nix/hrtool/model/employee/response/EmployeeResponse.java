@@ -6,6 +6,7 @@ import ua.com.alevel.nix.hrtool.model.position.response.PositionResponse;
 
 import javax.swing.text.html.Option;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,9 +21,9 @@ public class EmployeeResponse {
 
     private String lastName;
 
-    private long birthDate;
+    private LocalDate birthDate;
 
-    private long hiringDate;
+    private LocalDate hiringDate;
 
     private Set<PositionResponse> positions;
 
@@ -49,8 +50,8 @@ public class EmployeeResponse {
         employeeResponse.email = employee.getEmail();
         employeeResponse.firstName = employee.getEmployeeName().getFirstName();
         employeeResponse.lastName = employee.getEmployeeName().getLastName();
-        employeeResponse.birthDate = employee.getBirthDate().getEpochSecond();
-        employeeResponse.hiringDate = employee.getHiringDate().getEpochSecond();
+        employeeResponse.birthDate = employee.getBirthDate();
+        employeeResponse.hiringDate = employee.getHiringDate();
         return employeeResponse;
     }
 
@@ -86,19 +87,19 @@ public class EmployeeResponse {
         this.lastName = lastName;
     }
 
-    public long getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(long birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
-    public long getHiringDate() {
+    public LocalDate getHiringDate() {
         return hiringDate;
     }
 
-    public void setHiringDate(long hiringDate) {
+    public void setHiringDate(LocalDate hiringDate) {
         this.hiringDate = hiringDate;
     }
 

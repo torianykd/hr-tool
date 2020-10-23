@@ -6,6 +6,7 @@ import ua.com.alevel.nix.hrtool.model.position.Position;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
@@ -24,10 +25,10 @@ public class Employee {
     private EmployeeName employeeName;
 
     @Column(nullable = false)
-    private Instant birthDate;
+    private LocalDate birthDate;
 
     @Column(nullable = false)
-    private Instant hiringDate;
+    private LocalDate hiringDate;
 
     @ManyToMany
     @JoinTable(
@@ -46,7 +47,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String email, EmployeeName employeeName, Instant birthDate, Instant hiringDate) {
+    public Employee(String email, EmployeeName employeeName, LocalDate birthDate, LocalDate hiringDate) {
         this.email = email;
         this.employeeName = employeeName;
         this.birthDate = birthDate;
@@ -57,8 +58,8 @@ public class Employee {
         this(
                 request.getEmail(),
                 new EmployeeName(request.getFirstName(), request.getLastName()),
-                Instant.ofEpochSecond(request.getBirthDate()),
-                Instant.ofEpochSecond(request.getHiringDate())
+                request.getBirthDate(),
+               request.getHiringDate()
         );
     }
 
@@ -86,19 +87,19 @@ public class Employee {
         this.employeeName = employeeName;
     }
 
-    public Instant getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Instant birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
-    public Instant getHiringDate() {
+    public LocalDate getHiringDate() {
         return hiringDate;
     }
 
-    public void setHiringDate(Instant hiringDate) {
+    public void setHiringDate(LocalDate hiringDate) {
         this.hiringDate = hiringDate;
     }
 

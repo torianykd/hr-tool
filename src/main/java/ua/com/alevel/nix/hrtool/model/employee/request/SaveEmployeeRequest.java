@@ -1,10 +1,11 @@
 package ua.com.alevel.nix.hrtool.model.employee.request;
 
-import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.List;
 
 public class SaveEmployeeRequest {
@@ -20,13 +21,14 @@ public class SaveEmployeeRequest {
     private String lastName;
 
     @NotNull(message = "Birth date must not be null")
-    @Range(min = 1, max = 9999999999L, message = "Birth date must be a valid timestamp")
-    private Long birthDate = 1L;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate birthDate;
 
     @NotNull(message = "Hiring date must not be null")
-    @Range(min = 1, max = 9999999999L, message = "Hiring date must be a valid timestamp")
-    private Long hiringDate = 1L;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate hiringDate;
 
+    @NotNull
     private List<Long> positionIds;
 
     @Valid
@@ -56,19 +58,19 @@ public class SaveEmployeeRequest {
         this.lastName = lastName;
     }
 
-    public Long getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Long birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
-    public Long getHiringDate() {
+    public LocalDate getHiringDate() {
         return hiringDate;
     }
 
-    public void setHiringDate(Long hiringDate) {
+    public void setHiringDate(LocalDate hiringDate) {
         this.hiringDate = hiringDate;
     }
 

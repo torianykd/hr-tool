@@ -5,6 +5,8 @@ import ua.com.alevel.nix.hrtool.model.leaverequest.LeaveRequest;
 import ua.com.alevel.nix.hrtool.model.leaverequest.LeaveRequestStatus;
 import ua.com.alevel.nix.hrtool.model.leaverequest.LeaveRequestType;
 
+import java.time.LocalDate;
+
 public class LeaveRequestResponse {
 
     private long id;
@@ -13,15 +15,15 @@ public class LeaveRequestResponse {
 
     private LeaveRequestStatus status;
 
-    private long start;
+    private LocalDate start;
 
-    private long end;
+    private LocalDate end;
 
     private String comment;
 
     private EmployeeResponse employee;
 
-    public LeaveRequestResponse(long id, LeaveRequestType type, LeaveRequestStatus status, long start, long end, String comment) {
+    public LeaveRequestResponse(long id, LeaveRequestType type, LeaveRequestStatus status, LocalDate start, LocalDate end, String comment) {
         this.id = id;
         this.type = type;
         this.status = status;
@@ -35,8 +37,8 @@ public class LeaveRequestResponse {
                 leaveRequest.getId(),
                 leaveRequest.getType(),
                 leaveRequest.getStatus(),
-                leaveRequest.getStart().getEpochSecond(),
-                leaveRequest.getEnd().getEpochSecond(),
+                leaveRequest.getStart(),
+                leaveRequest.getEnd(),
                 leaveRequest.getComment()
         );
     }
@@ -71,19 +73,19 @@ public class LeaveRequestResponse {
         this.status = status;
     }
 
-    public long getStart() {
+    public LocalDate getStart() {
         return start;
     }
 
-    public void setStart(long start) {
+    public void setStart(LocalDate start) {
         this.start = start;
     }
 
-    public long getEnd() {
+    public LocalDate getEnd() {
         return end;
     }
 
-    public void setEnd(long end) {
+    public void setEnd(LocalDate end) {
         this.end = end;
     }
 

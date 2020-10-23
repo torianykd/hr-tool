@@ -30,8 +30,8 @@ create table employees
     email       varchar(255) not null,
     first_name  varchar(255) not null,
     last_name   varchar(255) not null,
-    birth_date  timestamp    not null,
-    hiring_date timestamp    not null,
+    birth_date  date         not null,
+    hiring_date date         not null,
     constraint employees_pk
         primary key (id)
 );
