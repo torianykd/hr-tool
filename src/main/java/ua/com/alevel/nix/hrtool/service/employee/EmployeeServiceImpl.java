@@ -25,9 +25,9 @@ import java.util.stream.Collectors;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    EmployeeRepository employeeRepository;
-    PositionRepository positionRepository;
-    ContactRepository contactRepository;
+    private final EmployeeRepository employeeRepository;
+    private final PositionRepository positionRepository;
+    private final ContactRepository contactRepository;
 
     public EmployeeServiceImpl(EmployeeRepository employeeRepository, PositionRepository positionRepository, ContactRepository contactRepository) {
         this.employeeRepository = employeeRepository;

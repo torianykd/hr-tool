@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @Tag(name = "Positions Resource")
 public class PositionController {
 
-    PositionService positionService;
+    private final PositionService positionService;
 
     public PositionController(PositionService positionService) {
         this.positionService = positionService;

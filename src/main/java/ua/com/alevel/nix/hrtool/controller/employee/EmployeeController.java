@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @Tag(name = "Employees Resource")
 public class EmployeeController {
 
-    EmployeeService employeeService;
+    private final EmployeeService employeeService;
 
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;

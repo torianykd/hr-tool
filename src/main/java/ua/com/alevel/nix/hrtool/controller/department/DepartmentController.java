@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @Tag(name = "Departments Resource")
 public class DepartmentController {
 
-    DepartmentService departmentService;
+    private final DepartmentService departmentService;
 
     public DepartmentController(DepartmentService departmentService) {
         this.departmentService = departmentService;
