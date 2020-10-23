@@ -1,5 +1,7 @@
 package ua.com.alevel.nix.hrtool.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ua.com.alevel.nix.hrtool.model.employee.Employee;
@@ -17,4 +19,5 @@ public interface LeaveRequestRepository extends JpaRepository<LeaveRequest, Long
     List<LeaveRequest> requestsForPeriod(
             Employee employee, LocalDate start, LocalDate end, Collection<LeaveRequestStatus> status);
 
+    Page<LeaveRequest> findAllByEmployeeOrderByIdDesc(Pageable pageable, Employee employee);
 }

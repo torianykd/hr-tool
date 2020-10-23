@@ -1,5 +1,7 @@
 package ua.com.alevel.nix.hrtool.service.leaverequest;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ua.com.alevel.nix.hrtool.exception.employee.EmployeeException;
 import ua.com.alevel.nix.hrtool.exception.leaverequest.LeaveRequestException;
@@ -25,6 +27,13 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
         this.leaveRequestRepository = leaveRequestRepository;
     }
 
+
+    @Override
+    public Page<LeaveRequestResponse> findAll(Pageable pageable, String employeeEmail) {
+        Employee employee = getEmployee(employeeEmail);
+        return leaveRequestRepository.findAllByEmployeeOrderByIdDesc(pageable, employee)
+                .map(LeaveRequestResponse::fromLeaveRequestWithBasicAttributes);
+    }
 
     @Override
     public LeaveRequestResponse create(SaveLeaveRequest request, String employeeEmail) {

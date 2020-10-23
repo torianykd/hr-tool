@@ -1,6 +1,10 @@
 package ua.com.alevel.nix.hrtool.controller.leaverequest;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +25,13 @@ public class LeaveRequestController {
 
     public LeaveRequestController(LeaveRequestService leaveRequestService) {
         this.leaveRequestService = leaveRequestService;
+    }
+
+    @GetMapping
+    @PageableAsQueryParam
+    public Page<LeaveRequestResponse> listRequests(@Parameter(hidden = true) Pageable pageable,
+                                                   @AuthenticationPrincipal Principal principal) {
+        return leaveRequestService.findAll(pageable, principal.getName());
     }
 
     @PostMapping
