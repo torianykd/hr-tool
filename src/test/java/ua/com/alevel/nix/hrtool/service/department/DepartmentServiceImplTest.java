@@ -8,10 +8,13 @@ import org.springframework.web.server.ResponseStatusException;
 import ua.com.alevel.nix.hrtool.model.department.Department;
 import ua.com.alevel.nix.hrtool.model.department.request.SaveDepartmentRequest;
 import ua.com.alevel.nix.hrtool.model.department.response.DepartmentResponse;
+import ua.com.alevel.nix.hrtool.model.position.Position;
+import ua.com.alevel.nix.hrtool.model.position.response.PositionResponse;
 import ua.com.alevel.nix.hrtool.repository.DepartmentRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,14 +37,23 @@ class DepartmentServiceImplTest {
     void findAll() {
         Department dep1 = new Department(1L, "department1");
         Department dep2 = new Department(2L, "department2");
+        Position position = new Position(1L, "position");
+        dep1.setPositions(Set.of(position));
         Page<Department> departments = new PageImpl<>(List.of(dep1, dep2));
         Pageable pageable = PageRequest.of(0, 20);
 
         when(departmentRepository.findAll(pageable)).thenReturn(departments);
 
         Page<DepartmentResponse> response = departmentService.findAll(pageable);
-        assertDepartmentMatchesResponse(dep1, response.getContent().get(0));
-        assertDepartmentMatchesResponse(dep2, response.getContent().get(1));
+        assertEquals(dep1.getId(), response.getContent().get(0).getId());
+        assertEquals(dep1.getName(), response.getContent().get(0).getName());
+        assertTrue(response.getContent().get(0).getPositions()
+                .contains(PositionResponse.fromPositionWithBasicAttributes(position)));
+        assertEquals(response.getContent().get(0).getPositions().size(), 1);
+
+        assertEquals(dep2.getId(), response.getContent().get(1).getId());
+        assertEquals(dep2.getName(), response.getContent().get(1).getName());
+        assertNull(response.getContent().get(1).getPositions());
         verify(departmentRepository).findAll(pageable);
 
         verifyNoMoreInteractions(departmentRepository);
@@ -119,6 +131,8 @@ class DepartmentServiceImplTest {
         long absentId = 10;
         long presentId = 1;
         Department department = new Department(presentId, "department");
+        Position position = new Position(1L, "position");
+        department.setPositions(Set.of(position));
 
         when(departmentRepository.findById(absentId)).thenReturn(Optional.empty());
         when(departmentRepository.findById(presentId)).thenReturn(Optional.of(department));
@@ -129,14 +143,12 @@ class DepartmentServiceImplTest {
         verify(departmentRepository).findById(absentId);
 
         DepartmentResponse response = departmentService.getById(presentId);
-        assertDepartmentMatchesResponse(department, response);
+        assertEquals(department.getId(), response.getId());
+        assertEquals(department.getName(), response.getName());
+        assertTrue(response.getPositions().contains(PositionResponse.fromPositionWithBasicAttributes(position)));
+        assertEquals(response.getPositions().size(), 1);
         verify(departmentRepository).findById(presentId);
 
         verifyNoMoreInteractions(departmentRepository);
-    }
-
-    private static void assertDepartmentMatchesResponse(Department department, DepartmentResponse response) {
-        assertEquals(department.getId(), response.getId());
-        assertEquals(department.getName(), response.getName());
     }
 }

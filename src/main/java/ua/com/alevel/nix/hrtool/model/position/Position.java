@@ -4,6 +4,7 @@ import ua.com.alevel.nix.hrtool.model.department.Department;
 import ua.com.alevel.nix.hrtool.model.employee.Employee;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -29,6 +30,11 @@ public class Position {
 
     public Position(String name) {
         this.name = name;
+    }
+
+    public Position(Long id, String name) {
+        this(name);
+        this.id = id;
     }
 
     public Long getId() {
@@ -61,5 +67,19 @@ public class Position {
 
     public void setEmployees(Set<Employee> employees) {
         this.employees = employees;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Position)) return false;
+        Position position = (Position) o;
+        return id.equals(position.id) &&
+                name.equals(position.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }
