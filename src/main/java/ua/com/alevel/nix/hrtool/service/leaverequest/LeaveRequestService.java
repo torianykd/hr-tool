@@ -9,6 +9,8 @@ public interface LeaveRequestService {
 
     Page<LeaveRequestResponse> findAll(Pageable pageable, String employeeEmail);
 
+    Page<LeaveRequestResponse> findAllByStatus(Pageable pageable, String status);
+
     LeaveRequestResponse create(SaveLeaveRequest request, String employeeEmail);
 
     void update(long id, SaveLeaveRequest request, String employeeEmail);

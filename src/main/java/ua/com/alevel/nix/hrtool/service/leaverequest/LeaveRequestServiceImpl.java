@@ -36,6 +36,13 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
     }
 
     @Override
+    public Page<LeaveRequestResponse> findAllByStatus(Pageable pageable, String status) {
+        LeaveRequestStatus leaveRequestStatus = validateStatus(status);
+        return leaveRequestRepository.findAllByStatus(pageable, leaveRequestStatus)
+                .map(LeaveRequestResponse::fromLeaveRequest);
+    }
+
+    @Override
     public LeaveRequestResponse create(SaveLeaveRequest request, String employeeEmail) {
         Employee employee = getEmployee(employeeEmail);
         validateRequestAvailability(request, employee);
@@ -116,6 +123,14 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
         if (!leaveRequest.getEmployee().equals(employee) ||
                 !leaveRequest.getStatus().equals(LeaveRequestStatus.PENDING)) {
             throw LeaveRequestException.actionForbidden();
+        }
+    }
+
+    private LeaveRequestStatus validateStatus(String status) {
+        try {
+            return LeaveRequestStatus.valueOf(status.toUpperCase());
+        } catch (IllegalArgumentException exception) {
+            throw LeaveRequestException.invalidStatus(status);
         }
     }
 

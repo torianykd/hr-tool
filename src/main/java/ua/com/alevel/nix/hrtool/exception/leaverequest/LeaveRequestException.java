@@ -17,4 +17,8 @@ public final class LeaveRequestException {
         return new ResponseStatusException(HttpStatus.FORBIDDEN, "Action on this resource is forbidden.");
     }
 
+    public static ResponseStatusException invalidStatus(String status) {
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, "Status " + status + " doesn't exists.");
+    }
+
 }

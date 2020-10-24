@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ua.com.alevel.nix.hrtool.Routes;
+import ua.com.alevel.nix.hrtool.model.leaverequest.LeaveRequestStatus;
 import ua.com.alevel.nix.hrtool.model.leaverequest.request.SaveLeaveRequest;
 import ua.com.alevel.nix.hrtool.model.leaverequest.response.LeaveRequestResponse;
 import ua.com.alevel.nix.hrtool.service.leaverequest.LeaveRequestService;
@@ -43,7 +44,7 @@ public class LeaveRequestController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable long id,@Valid @RequestBody SaveLeaveRequest request,
+    public void update(@PathVariable long id, @Valid @RequestBody SaveLeaveRequest request,
                        @AuthenticationPrincipal Principal principal) {
         leaveRequestService.update(id, request, principal.getName());
     }
@@ -66,4 +67,11 @@ public class LeaveRequestController {
         leaveRequestService.decline(id);
     }
 
+    @GetMapping("/manage")
+    @PageableAsQueryParam
+    public Page<LeaveRequestResponse> manageRequests(@Parameter(hidden = true) Pageable pageable,
+                                                     @RequestParam(required = false, defaultValue = "pending")
+                                                             String status) {
+        return leaveRequestService.findAllByStatus(pageable, status);
+    }
 }
