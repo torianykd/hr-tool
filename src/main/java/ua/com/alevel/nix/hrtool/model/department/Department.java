@@ -3,6 +3,7 @@ package ua.com.alevel.nix.hrtool.model.department;
 import ua.com.alevel.nix.hrtool.model.position.Position;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -20,6 +21,11 @@ public class Department {
     private Set<Position> positions;
 
     public Department() {
+    }
+
+    public Department(Long id, String name) {
+        this(name);
+        this.id = id;
     }
 
     public Department(String name) {
@@ -48,5 +54,19 @@ public class Department {
 
     public void setPositions(Set<Position> positions) {
         this.positions = positions;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Department)) return false;
+        Department that = (Department) o;
+        return id.equals(that.id) &&
+                name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }

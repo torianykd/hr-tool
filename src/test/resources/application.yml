@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: sa
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${AUTH0_ISSUER_URI}
+
+springdoc:
+  swagger-ui:
+    oauth:
+      clientId: ${AUTH0_CLIENT_ID}
+      clientSecret: ${AUTH0_CLIENT_SECRET}
+  oAuthFlow:
+    authorizationUrl: ${AUTH0_AUTH_URL}
+    tokenUrl: ${AUTH0_TOKEN_URL}
+
+auth0:
+  audience: ${AUTH0_AUDIENCE}
+  emailClaim: ${AUTH0_EMAIL_CLAIM}
