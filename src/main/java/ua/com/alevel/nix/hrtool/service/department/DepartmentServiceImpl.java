@@ -51,11 +51,4 @@ public class DepartmentServiceImpl implements DepartmentService {
         return departmentRepository.findById(id)
                 .orElseThrow(() -> DepartmentException.departmentNotFound(id));
     }
-
-    private void validateUnique(SaveDepartmentRequest request) {
-        String name = request.getName();
-        if (departmentRepository.existsByName(name)) {
-            throw DepartmentException.duplicateName(name);
-        }
-    }
 }

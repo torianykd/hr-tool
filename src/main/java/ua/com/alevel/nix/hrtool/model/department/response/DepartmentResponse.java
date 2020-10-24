@@ -3,6 +3,7 @@ package ua.com.alevel.nix.hrtool.model.department.response;
 import ua.com.alevel.nix.hrtool.model.department.Department;
 import ua.com.alevel.nix.hrtool.model.position.response.PositionResponse;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,9 +24,11 @@ public class DepartmentResponse {
 
     public static DepartmentResponse fromDepartment(Department department) {
         DepartmentResponse departmentResponse = fromDepartmentWithBasicAttributes(department);
-        departmentResponse.positions = department.getPositions().stream()
-                .map(PositionResponse::fromPositionWithBasicAttributes)
-                .collect(Collectors.toSet());
+        departmentResponse.positions = Optional.ofNullable(department.getPositions())
+                .map(positions -> positions.stream()
+                        .map(PositionResponse::fromPositionWithBasicAttributes)
+                        .collect(Collectors.toSet()))
+                .orElse(null);
         return departmentResponse;
     }
 
