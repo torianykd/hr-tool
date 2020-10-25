@@ -3,6 +3,7 @@ package ua.com.alevel.nix.hrtool.model.department.response;
 import ua.com.alevel.nix.hrtool.model.department.Department;
 import ua.com.alevel.nix.hrtool.model.position.response.PositionResponse;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -54,5 +55,19 @@ public class DepartmentResponse {
 
     public void setPositions(Set<PositionResponse> positions) {
         this.positions = positions;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DepartmentResponse)) return false;
+        DepartmentResponse that = (DepartmentResponse) o;
+        return id == that.id &&
+                name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }

@@ -16,7 +16,7 @@ public class SavePositionRequest {
     public SavePositionRequest() {
     }
 
-    public SavePositionRequest(long departmentId, String name) {
+    public SavePositionRequest(Long departmentId, String name) {
         this.departmentId = departmentId;
         this.name = name;
     }
