@@ -14,11 +14,13 @@ public class PositionResponse {
 
     private DepartmentResponse department;
 
+    public PositionResponse(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public static PositionResponse fromPositionWithBasicAttributes(Position position) {
-        PositionResponse positionResponse = new PositionResponse();
-        positionResponse.id = position.getId();
-        positionResponse.name = position.getName();
-        return positionResponse;
+        return new PositionResponse(position.getId(), position.getName());
     }
 
     public static PositionResponse fromPosition(Position position) {

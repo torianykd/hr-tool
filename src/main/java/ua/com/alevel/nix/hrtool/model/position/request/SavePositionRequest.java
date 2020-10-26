@@ -3,6 +3,7 @@ package ua.com.alevel.nix.hrtool.model.position.request;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 public class SavePositionRequest {
 
@@ -35,5 +36,19 @@ public class SavePositionRequest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SavePositionRequest)) return false;
+        SavePositionRequest request = (SavePositionRequest) o;
+        return Objects.equals(departmentId, request.departmentId) &&
+                name.equals(request.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(departmentId, name);
     }
 }

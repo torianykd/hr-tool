@@ -53,7 +53,7 @@ class DepartmentControllerTest {
         when(departmentService.findAll(pageable))
                 .thenReturn(pageResponse);
 
-        mvc.perform(get(Routes.DEPARTMENTS + "?page=0&size=20"))
+        mvc.perform(get(Routes.DEPARTMENTS).param("page", "0").param("size", "20"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().string(containsString(expectedJson)));
