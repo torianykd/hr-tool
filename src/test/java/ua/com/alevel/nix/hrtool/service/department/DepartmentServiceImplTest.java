@@ -62,8 +62,11 @@ class DepartmentServiceImplTest {
     @Test
     void create() {
         SaveDepartmentRequest request = new SaveDepartmentRequest("department");
+        SaveDepartmentRequest duplicated = new SaveDepartmentRequest("departmentDup");
         long id = 1L;
 
+        when(departmentRepository.existsByName(duplicated.getName())).thenReturn(true);
+        when(departmentRepository.existsByName(request.getName())).thenReturn(false);
         when(departmentRepository.save(notNull())).thenAnswer(invocation -> {
             Department department = invocation.getArgument(0);
             assertNull(department.getId());
@@ -72,11 +75,19 @@ class DepartmentServiceImplTest {
             return department;
         });
 
+        assertThatExceptionOfType(ResponseStatusException.class)
+                .isThrownBy(() -> departmentService.create(duplicated))
+                .satisfies(e -> assertEquals(HttpStatus.BAD_REQUEST, e.getStatus()));
+        verify(departmentRepository).existsByName(duplicated.getName());
+
+
         DepartmentResponse response = departmentService.create(request);
 
         assertEquals(id, response.getId());
         assertEquals(request.getName(), response.getName());
-        verify(departmentRepository, only()).save(notNull());
+        verify(departmentRepository).existsByName(request.getName());
+        verify(departmentRepository).save(notNull());
+        verifyNoMoreInteractions(departmentRepository);
     }
 
     @Test
@@ -84,10 +95,13 @@ class DepartmentServiceImplTest {
         long absentId = 10;
         long presentId = 1;
         SaveDepartmentRequest request = new SaveDepartmentRequest("new department");
+        SaveDepartmentRequest duplicated = new SaveDepartmentRequest("duplicated");
         Department department = new Department(presentId, "department");
 
         when(departmentRepository.findById(absentId)).thenReturn(Optional.empty());
         when(departmentRepository.findById(presentId)).thenReturn(Optional.of(department));
+        when(departmentRepository.existsByName(duplicated.getName())).thenReturn(true);
+        when(departmentRepository.existsByName(request.getName())).thenReturn(false);
         when(departmentRepository.save(same(department))).thenReturn(department);
 
         assertThatExceptionOfType(ResponseStatusException.class)
@@ -95,11 +109,19 @@ class DepartmentServiceImplTest {
                 .satisfies(e -> assertEquals(HttpStatus.NOT_FOUND, e.getStatus()));
         verify(departmentRepository).findById(absentId);
 
+        assertThatExceptionOfType(ResponseStatusException.class)
+                .isThrownBy(() -> departmentService.update(presentId, duplicated))
+                .satisfies(e -> assertEquals(HttpStatus.BAD_REQUEST, e.getStatus()));
+        verify(departmentRepository).findById(presentId);
+        verify(departmentRepository).existsByName(duplicated.getName());
+
+
         departmentService.update(presentId, request);
 
         assertEquals(request.getName(), department.getName());
 
-        verify(departmentRepository).findById(presentId);
+        verify(departmentRepository).existsByName(request.getName());
+        verify(departmentRepository, times(2)).findById(presentId);
         verify(departmentRepository).save(same(department));
 
         verifyNoMoreInteractions(departmentRepository);

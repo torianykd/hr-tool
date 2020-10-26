@@ -16,11 +16,13 @@ public class DepartmentResponse {
 
     private Set<PositionResponse> positions;
 
+    public DepartmentResponse(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public static DepartmentResponse fromDepartmentWithBasicAttributes(Department department) {
-        DepartmentResponse departmentResponse = new DepartmentResponse();
-        departmentResponse.id = department.getId();
-        departmentResponse.name = department.getName();
-        return departmentResponse;
+        return new DepartmentResponse(department.getId(), department.getName());
     }
 
     public static DepartmentResponse fromDepartment(Department department) {
