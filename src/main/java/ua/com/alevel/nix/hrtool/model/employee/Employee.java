@@ -54,12 +54,17 @@ public class Employee {
         this.hiringDate = hiringDate;
     }
 
+    public Employee(Long id, String email, EmployeeName employeeName, LocalDate birthDate, LocalDate hiringDate) {
+        this(email, employeeName, birthDate, hiringDate);
+        this.id = id;
+    }
+
     public Employee(SaveEmployeeRequest request) {
         this(
                 request.getEmail(),
                 new EmployeeName(request.getFirstName(), request.getLastName()),
                 request.getBirthDate(),
-               request.getHiringDate()
+                request.getHiringDate()
         );
     }
 

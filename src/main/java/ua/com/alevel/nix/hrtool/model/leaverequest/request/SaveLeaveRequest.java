@@ -26,6 +26,13 @@ public class SaveLeaveRequest {
 
     private String comment;
 
+    public SaveLeaveRequest(String type, LocalDate start, LocalDate end, String comment) {
+        this.type = type.toUpperCase();
+        this.start = start;
+        this.end = end;
+        this.comment = comment;
+    }
+
     public String getType() {
         return type;
     }

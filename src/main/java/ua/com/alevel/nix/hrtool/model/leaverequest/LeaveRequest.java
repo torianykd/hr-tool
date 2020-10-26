@@ -57,6 +57,11 @@ public class LeaveRequest {
         this.comment = comment;
     }
 
+    public LeaveRequest(Long id, LeaveRequestType type, LeaveRequestStatus status, LocalDate start, LocalDate end, String comment) {
+        this(type, status, start, end, comment);
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

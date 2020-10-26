@@ -6,6 +6,7 @@ import ua.com.alevel.nix.hrtool.model.leaverequest.LeaveRequestStatus;
 import ua.com.alevel.nix.hrtool.model.leaverequest.LeaveRequestType;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class LeaveRequestResponse {
 
@@ -103,5 +104,23 @@ public class LeaveRequestResponse {
 
     public void setEmployee(EmployeeResponse employee) {
         this.employee = employee;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LeaveRequestResponse)) return false;
+        LeaveRequestResponse response = (LeaveRequestResponse) o;
+        return id == response.id &&
+                type == response.type &&
+                status == response.status &&
+                start.equals(response.start) &&
+                end.equals(response.end) &&
+                Objects.equals(comment, response.comment);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, type, status, start, end, comment);
     }
 }
