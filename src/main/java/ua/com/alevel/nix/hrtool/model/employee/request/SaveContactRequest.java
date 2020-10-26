@@ -11,6 +11,11 @@ public class SaveContactRequest extends UpdateContactRequest {
     @EmployeeExistsConstraint
     private long employeeId;
 
+    public SaveContactRequest(long employeeId, String type, String value) {
+        super(type, value);
+        this.employeeId = employeeId;
+    }
+
     public long getEmployeeId() {
         return employeeId;
     }

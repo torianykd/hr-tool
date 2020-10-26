@@ -4,9 +4,8 @@ import ua.com.alevel.nix.hrtool.model.employee.Employee;
 import ua.com.alevel.nix.hrtool.model.position.Position;
 import ua.com.alevel.nix.hrtool.model.position.response.PositionResponse;
 
-import javax.swing.text.html.Option;
-import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -117,5 +116,23 @@ public class EmployeeResponse {
 
     public void setContacts(Set<ContactResponse> contacts) {
         this.contacts = contacts;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof EmployeeResponse)) return false;
+        EmployeeResponse that = (EmployeeResponse) o;
+        return id == that.id &&
+                email.equals(that.email) &&
+                firstName.equals(that.firstName) &&
+                lastName.equals(that.lastName) &&
+                birthDate.equals(that.birthDate) &&
+                hiringDate.equals(that.hiringDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, firstName, lastName, birthDate, hiringDate);
     }
 }

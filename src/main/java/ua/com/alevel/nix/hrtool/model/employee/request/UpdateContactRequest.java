@@ -15,6 +15,11 @@ public class UpdateContactRequest {
     @Length(min = 2, message = "Value must be 2 characters at least")
     private String value;
 
+    public UpdateContactRequest(String type, String value) {
+        this.type = type.toUpperCase();
+        this.value = value;
+    }
+
     public String getType() {
         return type;
     }

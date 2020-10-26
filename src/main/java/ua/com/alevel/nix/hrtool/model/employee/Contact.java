@@ -31,6 +31,11 @@ public class Contact {
         this.value = value;
     }
 
+    public Contact(Long id, ContactType type, String value) {
+        this(type, value);
+        this.id = id;
+    }
+
     public Contact(SaveContactRequest request) {
         type = ContactType.valueOf(request.getType());
         value = request.getValue();
