@@ -18,7 +18,9 @@ import ua.com.alevel.nix.hrtool.service.department.DepartmentService;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.*;
@@ -48,7 +50,7 @@ class DepartmentControllerTest {
         Pageable pageable = PageRequest.of(0, 20);
         Page<DepartmentResponse> pageResponse = new PageImpl<>(List.of(response));
 
-        String expectedJson = "{\"id\":1,\"name\":\"department\",\"positions\":[]}";
+        String expectedJson = buildJsonStringFromResponse(response);
 
         when(departmentService.findAll(pageable))
                 .thenReturn(pageResponse);
@@ -57,7 +59,9 @@ class DepartmentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().string(containsString(expectedJson)));
+
         verify(departmentService).findAll(pageable);
+        verifyNoMoreInteractions(departmentService);
     }
 
     @Test
@@ -69,7 +73,7 @@ class DepartmentControllerTest {
         when(departmentService.getById(presentId))
                 .thenReturn(response);
 
-        String expectedJson = "{\"id\":" + presentId + ",\"name\":\"department\",\"positions\":[]}";
+        String expectedJson = buildJsonStringFromResponse(response);
 
         mvc.perform(get(Routes.DEPARTMENTS + "/" + presentId))
                 .andExpect(status().isOk())
@@ -77,6 +81,7 @@ class DepartmentControllerTest {
                 .andExpect(content().json(expectedJson));
 
         verify(departmentService).getById(presentId);
+        verifyNoMoreInteractions(departmentService);
     }
 
     @Test
@@ -88,6 +93,7 @@ class DepartmentControllerTest {
 
         mvc.perform(get(Routes.DEPARTMENTS + "/" + absentId))
                 .andExpect(status().isNotFound());
+
         verify(departmentService).getById(absentId);
         verifyNoMoreInteractions(departmentService);
     }
@@ -101,16 +107,17 @@ class DepartmentControllerTest {
 
         when(departmentService.create(request)).thenReturn(response);
 
-        String expectedJson = "{\"id\":1,\"name\":\"department\",\"positions\":[]}";
+        String expectedJson = buildJsonStringFromResponse(response);
 
         mvc.perform(post(Routes.DEPARTMENTS)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"department\"}")
-        )
+                .content(buildJsonStringFromRequest(request)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(expectedJson));
+
         verify(departmentService).create(request);
+        verifyNoMoreInteractions(departmentService);
     }
 
     @Test
@@ -122,46 +129,64 @@ class DepartmentControllerTest {
 
         mvc.perform(post(Routes.DEPARTMENTS)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"department\"}")
-        )
+                .content(buildJsonStringFromRequest(request)))
                 .andExpect(status().isBadRequest());
+
         verify(departmentService).create(request);
+        verifyNoMoreInteractions(departmentService);
     }
 
     @Test
-    void update() throws Exception {
-        SaveDepartmentRequest request = new SaveDepartmentRequest("new department");
-        SaveDepartmentRequest duplicate = new SaveDepartmentRequest("duplicate department");
+    void testUpdateEmployee() throws Exception {
         long presentId = 1;
+        SaveDepartmentRequest request = new SaveDepartmentRequest("new department");
+
+        doNothing()
+                .when(departmentService)
+                .update(presentId, request);
+
+        mvc.perform(put(Routes.DEPARTMENTS + "/" + presentId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(buildJsonStringFromRequest(request)))
+                .andExpect(status().isNoContent());
+
+        verify(departmentService).update(presentId, request);
+        verifyNoMoreInteractions(departmentService);
+    }
+
+    @Test
+    void testInvalidDepartmentIdOnUpdate() throws Exception {
+        SaveDepartmentRequest request = new SaveDepartmentRequest("new department");
         long absentId = 10;
 
         doThrow(DepartmentException.departmentNotFound(absentId))
                 .when(departmentService)
                 .update(absentId, request);
-        doThrow(DepartmentException.duplicateName(duplicate.getName()))
-                .when(departmentService)
-                .update(presentId, duplicate);
-        doNothing()
-                .when(departmentService)
-                .update(presentId, request);
 
         mvc.perform(put(Routes.DEPARTMENTS + "/" + absentId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"new department\"}"))
+                .content(buildJsonStringFromRequest(request)))
                 .andExpect(status().isNotFound());
+
         verify(departmentService).update(absentId, request);
+        verifyNoMoreInteractions(departmentService);
+    }
+
+    @Test
+    void testDuplicateNameOnUpdateDepartment() throws Exception {
+        long presentId = 1;
+        SaveDepartmentRequest duplicate = new SaveDepartmentRequest("duplicate department");
+
+        doThrow(DepartmentException.duplicateName(duplicate.getName()))
+                .when(departmentService)
+                .update(presentId, duplicate);
 
         mvc.perform(put(Routes.DEPARTMENTS + "/" + presentId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"duplicate department\"}"))
+                .content(buildJsonStringFromRequest(duplicate)))
                 .andExpect(status().isBadRequest());
-        verify(departmentService).update(presentId, duplicate);
 
-        mvc.perform(put(Routes.DEPARTMENTS + "/" + presentId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"new department\"}"))
-                .andExpect(status().isNoContent());
-        verify(departmentService).update(presentId, request);
+        verify(departmentService).update(presentId, duplicate);
         verifyNoMoreInteractions(departmentService);
     }
 
@@ -175,6 +200,7 @@ class DepartmentControllerTest {
 
         mvc.perform(delete(Routes.DEPARTMENTS + "/" + presentId))
                 .andExpect(status().isNoContent());
+
         verify(departmentService).deleteById(presentId);
         verifyNoMoreInteractions(departmentService);
     }
@@ -192,5 +218,29 @@ class DepartmentControllerTest {
 
         verify(departmentService).deleteById(absentId);
         verifyNoMoreInteractions(departmentService);
+    }
+
+    private String buildJsonStringFromRequest(SaveDepartmentRequest request) {
+        return "{" +
+                "\"name\": \"" + request.getName() + "\"" +
+                "}";
+    }
+
+    private String buildJsonStringFromResponse(DepartmentResponse response) {
+        String positions = Optional.ofNullable(response.getPositions())
+                .map(positionResponses -> positionResponses.stream()
+                        .map(positionResponse -> "{" +
+                                "\"id\":" + positionResponse.getId() + "," +
+                                "\"name\":\"" + positionResponse.getName() + "\"" +
+                                "}")
+                        .collect(Collectors.joining(","))
+                )
+                .orElse("");
+
+        return "{" +
+                    "\"id\":" + response.getId() + "," +
+                    "\"name\":\"" + response.getName() + "\"," +
+                    "\"positions\":[" + positions + "]" +
+                "}";
     }
 }
