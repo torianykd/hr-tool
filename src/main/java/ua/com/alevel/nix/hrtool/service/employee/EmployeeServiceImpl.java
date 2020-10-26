@@ -46,9 +46,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Employee employee = new Employee(request);
         employee.setPositions(new HashSet<>(positions));
-        Employee savedEmployee = employeeRepository.save(employee);
 
-        return EmployeeResponse.fromEmployee(savedEmployee);
+        return EmployeeResponse.fromEmployee(
+                employeeRepository.save(employee)
+        );
     }
 
     @Override

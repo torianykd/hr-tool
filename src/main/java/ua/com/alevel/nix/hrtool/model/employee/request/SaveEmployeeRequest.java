@@ -31,6 +31,14 @@ public class SaveEmployeeRequest {
     @NotNull
     private List<Long> positionIds;
 
+    public SaveEmployeeRequest(String email, String firstName, String lastName, LocalDate birthDate, LocalDate hiringDate) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.hiringDate = hiringDate;
+    }
+
     public String getEmail() {
         return email;
     }
