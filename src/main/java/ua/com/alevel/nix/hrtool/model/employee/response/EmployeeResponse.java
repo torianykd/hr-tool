@@ -1,5 +1,6 @@
 package ua.com.alevel.nix.hrtool.model.employee.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import ua.com.alevel.nix.hrtool.model.employee.Employee;
 import ua.com.alevel.nix.hrtool.model.position.Position;
 import ua.com.alevel.nix.hrtool.model.position.response.PositionResponse;
@@ -20,13 +21,24 @@ public class EmployeeResponse {
 
     private String lastName;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private LocalDate birthDate;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private LocalDate hiringDate;
 
     private Set<PositionResponse> positions;
 
     private Set<ContactResponse> contacts;
+
+    public EmployeeResponse(long id, String email, String firstName, String lastName, LocalDate birthDate, LocalDate hiringDate) {
+        this.id = id;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.hiringDate = hiringDate;
+    }
 
     public static EmployeeResponse fromEmployee(Employee employee) {
         EmployeeResponse employeeResponse = fromEmployeeWithBasicAttributes(employee);
@@ -44,14 +56,14 @@ public class EmployeeResponse {
     }
 
     public static EmployeeResponse fromEmployeeWithBasicAttributes(Employee employee) {
-        EmployeeResponse employeeResponse = new EmployeeResponse();
-        employeeResponse.id = employee.getId();
-        employeeResponse.email = employee.getEmail();
-        employeeResponse.firstName = employee.getEmployeeName().getFirstName();
-        employeeResponse.lastName = employee.getEmployeeName().getLastName();
-        employeeResponse.birthDate = employee.getBirthDate();
-        employeeResponse.hiringDate = employee.getHiringDate();
-        return employeeResponse;
+        return new EmployeeResponse(
+                employee.getId(),
+                employee.getEmail(),
+                employee.getEmployeeName().getFirstName(),
+                employee.getEmployeeName().getLastName(),
+                employee.getBirthDate(),
+                employee.getHiringDate()
+        );
     }
 
     public long getId() {
