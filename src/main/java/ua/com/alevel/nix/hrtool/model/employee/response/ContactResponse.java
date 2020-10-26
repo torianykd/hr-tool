@@ -11,6 +11,8 @@ public class ContactResponse {
 
     private String value;
 
+    private EmployeeResponse employee;
+
     public ContactResponse(long id, ContactType type, String value) {
         this.id = id;
         this.type = type;
@@ -23,6 +25,14 @@ public class ContactResponse {
                 contact.getType(),
                 contact.getValue()
         );
+    }
+
+    public static ContactResponse fromContact(Contact contact) {
+        ContactResponse contactResponse = fromContactWithBasicAttributes(contact);
+        contactResponse.setEmployee(
+                EmployeeResponse.fromEmployeeWithBasicAttributes(contact.getEmployee())
+        );
+        return contactResponse;
     }
 
     public long getId() {
@@ -47,5 +57,13 @@ public class ContactResponse {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public EmployeeResponse getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(EmployeeResponse employee) {
+        this.employee = employee;
     }
 }

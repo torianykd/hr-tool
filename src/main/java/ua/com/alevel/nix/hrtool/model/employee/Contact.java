@@ -73,13 +73,13 @@ public class Contact {
         if (this == o) return true;
         if (!(o instanceof Contact)) return false;
         Contact contact = (Contact) o;
-        return type == contact.type &&
-                value.equals(contact.value) &&
-                employee.equals(contact.employee);
+        return id.equals(contact.id) &&
+                type == contact.type &&
+                value.equals(contact.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, value, employee);
+        return Objects.hash(id, type, value);
     }
 }

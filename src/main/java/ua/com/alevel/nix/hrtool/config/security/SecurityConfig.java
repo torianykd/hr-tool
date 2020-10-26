@@ -30,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             Routes.DEPARTMENTS + "/**",
                             Routes.POSITIONS + "/**",
                             Routes.EMPLOYEES + "/**",
+                            Routes.CONTACTS + "/**",
                             Routes.LEAVE_REQUESTS + "/{id:\\d+}/**",
                             Routes.LEAVE_REQUESTS + "/manage"
                     ).hasAuthority("SCOPE_manage:resources")

@@ -27,12 +27,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final PositionRepository positionRepository;
-    private final ContactRepository contactRepository;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, PositionRepository positionRepository, ContactRepository contactRepository) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, PositionRepository positionRepository) {
         this.employeeRepository = employeeRepository;
         this.positionRepository = positionRepository;
-        this.contactRepository = contactRepository;
     }
 
     @Override
@@ -49,15 +47,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = new Employee(request);
         employee.setPositions(new HashSet<>(positions));
         Employee savedEmployee = employeeRepository.save(employee);
-
-        if (!request.getContacts().isEmpty()) {
-            Set<Contact> contacts = request.getContacts().stream()
-                    .map(Contact::new)
-                    .peek(contact -> contact.setEmployee(savedEmployee))
-                    .collect(Collectors.toSet());
-            contactRepository.saveAll(contacts);
-            savedEmployee.setContacts(contacts);
-        }
 
         return EmployeeResponse.fromEmployee(savedEmployee);
     }
@@ -80,7 +69,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setBirthDate(request.getBirthDate());
         employee.setHiringDate(request.getHiringDate());
         employee.setPositions(new HashSet<>(positions));
-        updateContacts(employee, request.getContacts());
         employeeRepository.save(employee);
     }
 
@@ -88,27 +76,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void deleteById(long id) {
         getEmployee(id);
         employeeRepository.deleteById(id);
-    }
-
-    private void updateContacts(Employee employee, List<SaveContactRequest> contacts) {
-        if (contacts.isEmpty() && !employee.getContacts().isEmpty()) {
-            contactRepository.deleteAll(employee.getContacts());
-            employee.setContacts(new HashSet<>());
-            return;
-        }
-        Set<Contact> requestContacts = contacts.stream()
-                .map(Contact::new)
-                .peek(contact -> contact.setEmployee(employee))
-                .collect(Collectors.toSet());
-        // Save new contacts
-        requestContacts.stream()
-                .filter(requestContact -> !employee.getContacts().contains(requestContact))
-                .forEach(contactRepository::save);
-        // Remove contact not present in request
-        employee.getContacts().stream()
-                .filter(employeeContact -> !requestContacts.contains(employeeContact))
-                .peek(employeeContact -> employee.getContacts().remove(employeeContact))
-                .forEach(contactRepository::delete);
     }
 
     private Employee getEmployee(long id) {

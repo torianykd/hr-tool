@@ -31,9 +31,6 @@ public class SaveEmployeeRequest {
     @NotNull
     private List<Long> positionIds;
 
-    @Valid
-    private List<SaveContactRequest> contacts;
-
     public String getEmail() {
         return email;
     }
@@ -80,13 +77,5 @@ public class SaveEmployeeRequest {
 
     public void setPositionIds(List<Long> positionIds) {
         this.positionIds = positionIds;
-    }
-
-    public List<SaveContactRequest> getContacts() {
-        return contacts;
-    }
-
-    public void setContacts(List<SaveContactRequest> contacts) {
-        this.contacts = contacts;
     }
 }
