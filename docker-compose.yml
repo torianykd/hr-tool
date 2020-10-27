@@ -6,6 +6,7 @@ services:
     build:
       context: .
     container_name: hr_tool_service
+    restart: always
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://hr-tool-db:3306/hr-tool
     env_file:
@@ -22,11 +23,5 @@ services:
     environment:
       MYSQL_DATABASE: hr-tool
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    volumes:
-      - db-data:/var/lib/mysql
     ports:
       - 3306:3306
-
-volumes:
-  db-data:
-    driver: local
