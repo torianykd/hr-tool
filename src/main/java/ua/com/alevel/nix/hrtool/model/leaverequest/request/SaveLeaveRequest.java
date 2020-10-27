@@ -7,6 +7,7 @@ import ua.com.alevel.nix.hrtool.model.leaverequest.constraint.StartValueConstrai
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @EndValueConstraint
 public class SaveLeaveRequest {
@@ -25,6 +26,9 @@ public class SaveLeaveRequest {
     private LocalDate end;
 
     private String comment;
+
+    public SaveLeaveRequest() {
+    }
 
     public SaveLeaveRequest(String type, LocalDate start, LocalDate end, String comment) {
         this.type = type.toUpperCase();
@@ -63,5 +67,21 @@ public class SaveLeaveRequest {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SaveLeaveRequest)) return false;
+        SaveLeaveRequest request = (SaveLeaveRequest) o;
+        return type.equals(request.type) &&
+                start.equals(request.start) &&
+                end.equals(request.end) &&
+                Objects.equals(comment, request.comment);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, start, end, comment);
     }
 }

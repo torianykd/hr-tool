@@ -1,5 +1,6 @@
 package ua.com.alevel.nix.hrtool.model.leaverequest.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import ua.com.alevel.nix.hrtool.model.employee.response.EmployeeResponse;
 import ua.com.alevel.nix.hrtool.model.leaverequest.LeaveRequest;
 import ua.com.alevel.nix.hrtool.model.leaverequest.LeaveRequestStatus;
@@ -16,13 +17,18 @@ public class LeaveRequestResponse {
 
     private LeaveRequestStatus status;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private LocalDate start;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private LocalDate end;
 
     private String comment;
 
     private EmployeeResponse employee;
+
+    public LeaveRequestResponse() {
+    }
 
     public LeaveRequestResponse(long id, LeaveRequestType type, LeaveRequestStatus status, LocalDate start, LocalDate end, String comment) {
         this.id = id;
