@@ -1,7 +1,21 @@
 version: '3'
 
 services:
-  db:
+  hr-tool-service:
+    image: hr-tool-service:0.0.1-SNAPSHOT
+    build:
+      context: .
+    container_name: hr_tool_service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://hr-tool-db:3306/hr-tool
+    env_file:
+      - ./.env
+    depends_on:
+      - hr-tool-db
+    ports:
+      - 8080:8080
+
+  hr-tool-db:
     image: mysql:8.0
     container_name: hr_tool_db
     restart: always
